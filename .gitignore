@@ -1,0 +1,33 @@
+# Python & Environment
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+.venv
+env/
+venv/
+ENV/
+*.log
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+
+# OS / System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE Files
+.vscode/
+.idea/
+
+# Large / Regenerable Data Files (See data/README.md for download/reproduction instructions)
+data/raw/raw_dataset.csv
+data/raw/simulated_marketing.csv
+data/processed/clean.csv
+dashboard/data/fact_campaign.csv
