@@ -1,0 +1,14 @@
+step,issue,rows_affected,action,reason
+1,Missing values,0,KEEP,Zero nulls across all 29 columns — no action needed
+2,Full-row duplicates,0,KEEP,Zero full-row duplicates detected
+2,Campaign_ID duplicates,0,KEEP,"All 200,000 campaign IDs are unique"
+3,Date column type (string DD-MM-YYYY),200000,FIX — convert to datetime64,Datetime type required for time-series operations; dayfirst=True used to avoid MM-DD confusion
+3,Missing calendar dates,0,KEEP,All 365 days of 2021 present — no gaps
+4,"Logical violations (spend<=0, revenue<0, clicks>impressions, etc.)",0,KEEP,All 8 logical checks pass — no violations detected
+5,IQR outliers — Spend,0,KEEP,Spend bounded by raw data ($5k–$20k); no rows outside Tukey fences
+5,IQR outliers — Revenue (lognormal right tail),9874,KEEP,Lognormal right-tail values are statistically expected and represent high-value campaigns. Removing them would truncate the distribution and bias revenue analysis downward.
+5,IQR outliers — ROI_computed extreme upper values,12887,"CAP at upper=5.0, lower=-1.0",Values above 500% ROI create excessive leverage in regression; -1.0 is the theoretical floor (total loss). Cap preserves the distribution shape while controlling extremes for modelling.
+6,Column name casing (PascalCase / mixed),200000,FIX — rename all to snake_case,snake_case is Python and SQL convention; prevents AttributeError on df.Column_Name dot access
+6,String label whitespace (potential leading/trailing spaces),200000,FIX — str.strip().str.title(),Hidden whitespace causes groupby() to create phantom groups; title-case ensures consistent display in charts
+6,"Redundant columns (ROI raw noise, Acquisition_Cost_num, Date_dt as string)",200000,DROP 3 columns,"ROI (raw): uniform noise, no signal, risk of being used accidentally. Acquisition_Cost_num: duplicated by spend. Date_dt: was serialised as string in CSV, replaced by cleanly-parsed date column."
+7,Missing derived time fields,200000,"ADD — year, year_month",Required for time-series aggregations and seasonality analysis in EDA phase
