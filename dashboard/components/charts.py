@@ -82,51 +82,68 @@ def kpi_card(
     tooltip: str | None = None,
     icon: str | None = None,
     accent_color: str | None = None,
-    height: int = 110,
+    height: int = 112,
 ) -> None:
     """
     Render a single KPI card with optional delta badge as a distinct partition card.
-    Rendered via st.markdown on a single non-indented string to avoid raw markdown escaping.
+    Guaranteed uniform dimensions and layout across all pages.
     """
     accent = accent_color or COLORS["accent_blue"]
-    delta_color = ""
-    delta_arrow = ""
+    c_sec = COLORS["text_secondary"]
+    card_height = height or 112
+
+    tooltip_attr = f'title="{tooltip}"' if tooltip else ""
+    icon_html = f'<span style="font-size:1.05rem;margin-right:6px;vertical-align:middle;">{icon}</span>' if icon else ""
+
     if delta is not None and delta_positive is not None:
         delta_color = COLORS["positive"] if delta_positive else COLORS["negative"]
         delta_arrow = "&#9650;" if delta_positive else "&#9660;"
-
-    tooltip_attr = f'title="{tooltip}"' if tooltip else ""
-    icon_html = f'<span style="font-size:1.15rem;margin-right:6px">{icon}</span>' if icon else ""
-
-    delta_html = (
-        f'<div style="margin-top:4px;font-size:0.75rem;color:{delta_color};font-weight:700">'
-        f'{delta_arrow}&nbsp;{delta}</div>'
-    ) if delta else ""
-    c_sec = COLORS["text_secondary"]
-    subtitle_html = (
-        f'<div style="font-size:0.7rem;color:{c_sec};margin-top:2px">{subtitle}</div>'
-    ) if subtitle else ""
+        bottom_html = (
+            f'<div style="font-size:0.75rem;color:{delta_color};font-weight:700;'
+            f'white-space:nowrap;display:flex;align-items:center;gap:3px;">'
+            f'<span>{delta_arrow}</span><span>{delta}</span></div>'
+        )
+    elif subtitle:
+        bottom_html = (
+            f'<div style="font-size:0.7rem;color:{c_sec};white-space:nowrap;'
+            f'overflow:hidden;text-overflow:ellipsis;" title="{subtitle}">{subtitle}</div>'
+        )
+    else:
+        bottom_html = '<div style="height:1px;"></div>'
 
     html = (
-        f'<div {tooltip_attr} style="background:#0c1033;'
-        f'border:1.5px solid rgba(255,255,255,0.22);border-left:4px solid {accent};border-radius:10px;'
-        f'padding:12px 16px;box-shadow:0 4px 16px rgba(0,0,0,0.35);cursor:default;width:100%;'
-        f'font-family:Inter,sans-serif;">'
+        f'<div class="kpi-card" {tooltip_attr} style="background:#0c1033;'
+        f'border:1.5px solid rgba(255,255,255,0.22);border-left:4px solid {accent} !important;'
+        f'border-radius:10px;padding:12px 14px;box-shadow:0 4px 16px rgba(0,0,0,0.35);'
+        f'cursor:default;width:100%;height:{card_height}px !important;min-height:{card_height}px !important;'
+        f'max-height:{card_height}px !important;box-sizing:border-box !important;'
+        f'display:flex;flex-direction:column;justify-content:space-between;font-family:Inter,sans-serif;">'
+        f'<div>'
         f'<div style="font-size:0.72rem;color:{c_sec};font-weight:700;'
-        f'letter-spacing:0.07em;text-transform:uppercase;margin-bottom:4px">'
+        f'letter-spacing:0.07em;text-transform:uppercase;margin-bottom:3px;'
+        f'white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="{title}">'
         f'{icon_html}{title}</div>'
-        f'<div style="font-size:1.5rem;font-weight:800;color:#ffffff;line-height:1.1">{value}</div>'
-        f'{delta_html}{subtitle_html}</div>'
+        f'<div style="font-size:1.42rem;font-weight:800;color:#ffffff;line-height:1.15;'
+        f'white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="{value}">'
+        f'{value}</div>'
+        f'</div>'
+        f'<div style="height:20px;min-height:20px;max-height:20px;display:flex;'
+        f'align-items:center;overflow:hidden;">'
+        f'{bottom_html}</div>'
+        f'</div>'
     )
     st.markdown(html, unsafe_allow_html=True)
 
 
-def kpi_row(cards: list[dict]) -> None:
-    """Render a row of KPI cards from a list of dicts (args to kpi_card)."""
+def kpi_row(cards: list[dict], height: int = 112) -> None:
+    """Render a row of KPI cards from a list of dicts with guaranteed equal sizing."""
     cols = st.columns(len(cards))
     for col, card in zip(cols, cards):
+        card_copy = dict(card)
+        if "height" not in card_copy:
+            card_copy["height"] = height
         with col:
-            kpi_card(**card)
+            kpi_card(**card_copy)
 
 
 # ─── INSIGHT BLOCK ────────────────────────────────────────────────────────────

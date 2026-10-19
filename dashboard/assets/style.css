@@ -145,6 +145,30 @@ header {
     margin-left: 10px;
 }
 
+/* ── KPI Cards: Guaranteed Uniform Size & Layout ──────────────── */
+.kpi-card {
+    background: #0c1033 !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.22) !important;
+    border-radius: 10px !important;
+    padding: 12px 14px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35) !important;
+    cursor: default !important;
+    width: 100% !important;
+    height: 112px !important;
+    min-height: 112px !important;
+    max-height: 112px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+.kpi-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 22px rgba(79, 108, 247, 0.35) !important;
+}
+
 /* ── Metric widgets (st.metric) ──────────────────────────────── */
 [data-testid="stMetric"] {
     background: #0c1033 !important;
@@ -272,5 +296,10 @@ h2, h3 {
 }
 [data-testid="stHorizontalBlock"] {
     align-items: stretch !important;
-    gap: 1rem !important;
+    gap: 0.85rem !important;
+}
+[data-testid="stHorizontalBlock"] > [data-testid="column"] {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: stretch !important;
 }

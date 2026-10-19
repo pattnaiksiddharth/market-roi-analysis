@@ -111,7 +111,6 @@ def show():
             "tooltip":      f"Highest ROI channel: {best_ch} at {best_roi:.2%}",
             "icon":         "🏆",
             "accent_color": COLORS["positive"],
-            "height":       110,
         },
         {
             "title":        "Worst Channel",
@@ -121,7 +120,6 @@ def show():
             "tooltip":      f"Lowest ROI channel: {worst_ch} at {worst_roi:.2%}",
             "icon":         "⚠️",
             "accent_color": COLORS["negative"],
-            "height":       110,
         },
         {
             "title":        "Revenue per Conversion",
@@ -129,7 +127,6 @@ def show():
             "tooltip":      "Revenue per Conversion = Total Revenue / Total Conversions",
             "icon":         "💎",
             "accent_color": COLORS["accent_cyan"],
-            "height":       110,
         },
     ])
 

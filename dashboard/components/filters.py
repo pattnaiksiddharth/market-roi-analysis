@@ -57,24 +57,57 @@ def render_sidebar_filter_controls(df: pd.DataFrame) -> dict:
     max_date          = df["date"].max().date()
 
     # ── Initialise session_state defaults ────────────────────────────────────
+    if "sb_channels" not in st.session_state:
+        st.session_state["sb_channels"] = list(all_channels)
+    if "sb_date_start" not in st.session_state:
+        st.session_state["sb_date_start"] = min_date
+    if "sb_date_end" not in st.session_state:
+        st.session_state["sb_date_end"] = max_date
+    if "sb_campaign_types" not in st.session_state:
+        st.session_state["sb_campaign_types"] = list(all_types)
+    if "sb_locations" not in st.session_state:
+        st.session_state["sb_locations"] = list(all_locations)
+    if "sb_granularity" not in st.session_state:
+        st.session_state["sb_granularity"] = "monthly"
+    if "sb_new_customer_share" not in st.session_state:
+        st.session_state["sb_new_customer_share"] = 0.70
+
     if "filters" not in st.session_state:
         st.session_state["filters"] = {
-            "channels":          all_channels,
+            "channels":          list(all_channels),
             "date_start":        min_date,
             "date_end":          max_date,
-            "campaign_types":    all_types,
-            "locations":         all_locations,
+            "campaign_types":    list(all_types),
+            "locations":         list(all_locations),
             "granularity":       "monthly",
-            "new_customer_share": 0.7,
+            "new_customer_share": 0.70,
         }
 
-    f = st.session_state["filters"]
+    # ── Callback for Reset Filters button ─────────────────────────────────────
+    def _reset_all_filters():
+        st.session_state["sb_channels"] = list(all_channels)
+        st.session_state["sb_date_start"] = min_date
+        st.session_state["sb_date_end"] = max_date
+        st.session_state["sb_campaign_types"] = list(all_types)
+        st.session_state["sb_locations"] = list(all_locations)
+        st.session_state["sb_granularity"] = "monthly"
+        st.session_state["sb_new_customer_share"] = 0.70
+        st.session_state["ov_selected_channel"] = None
+        st.session_state["ch_selected"] = None
+        st.session_state["filters"] = {
+            "channels":          list(all_channels),
+            "date_start":        min_date,
+            "date_end":          max_date,
+            "campaign_types":    list(all_types),
+            "locations":         list(all_locations),
+            "granularity":       "monthly",
+            "new_customer_share": 0.70,
+        }
 
     # ── Channel multiselect ───────────────────────────────────────────────────
     channels = st.sidebar.multiselect(
         "📡 Channels",
         options=all_channels,
-        default=f.get("channels", all_channels),
         key="sb_channels",
     )
 
@@ -85,11 +118,11 @@ def render_sidebar_filter_controls(df: pd.DataFrame) -> dict:
     )
     col1, col2 = st.sidebar.columns(2)
     date_start = col1.date_input(
-        "From", value=f.get("date_start", min_date),
+        "From",
         min_value=min_date, max_value=max_date, key="sb_date_start", label_visibility="collapsed"
     )
     date_end = col2.date_input(
-        "To", value=f.get("date_end", max_date),
+        "To",
         min_value=min_date, max_value=max_date, key="sb_date_end", label_visibility="collapsed"
     )
 
@@ -97,7 +130,6 @@ def render_sidebar_filter_controls(df: pd.DataFrame) -> dict:
     campaign_types = st.sidebar.multiselect(
         "🎯 Campaign Types",
         options=all_types,
-        default=f.get("campaign_types", all_types),
         key="sb_campaign_types",
     )
 
@@ -105,7 +137,6 @@ def render_sidebar_filter_controls(df: pd.DataFrame) -> dict:
     locations = st.sidebar.multiselect(
         "📍 Locations",
         options=all_locations,
-        default=f.get("locations", all_locations),
         key="sb_locations",
     )
 
@@ -117,7 +148,6 @@ def render_sidebar_filter_controls(df: pd.DataFrame) -> dict:
     granularity = st.sidebar.radio(
         "Time Granularity",
         options=["daily", "weekly", "monthly"],
-        index=["daily", "weekly", "monthly"].index(f.get("granularity", "monthly")),
         horizontal=True,
         key="sb_granularity",
         label_visibility="collapsed",
@@ -131,7 +161,6 @@ def render_sidebar_filter_controls(df: pd.DataFrame) -> dict:
     new_customer_share = st.sidebar.number_input(
         "New-customer share",
         min_value=0.0, max_value=1.0,
-        value=float(f.get("new_customer_share", 0.7)),
         step=0.05, format="%.2f",
         key="sb_new_customer_share",
         label_visibility="collapsed",
@@ -140,29 +169,26 @@ def render_sidebar_filter_controls(df: pd.DataFrame) -> dict:
 
     # ── Reset button ──────────────────────────────────────────────────────────
     st.sidebar.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
-    reset = st.sidebar.button("🔄 Reset Filters", width='stretch', key="sb_reset")
+    st.sidebar.button(
+        "🔄 Reset Filters",
+        width='stretch',
+        key="sb_reset",
+        on_click=_reset_all_filters,
+    )
 
-    if reset:
-        st.session_state["filters"] = {
-            "channels":          all_channels,
-            "date_start":        min_date,
-            "date_end":          max_date,
-            "campaign_types":    all_types,
-            "locations":         all_locations,
-            "granularity":       "monthly",
-            "new_customer_share": 0.7,
-        }
-        st.rerun()
+    # Date sanity check
+    actual_start = min(date_start, date_end)
+    actual_end = max(date_start, date_end)
 
     # Update session state
     st.session_state["filters"] = {
         "channels":          channels if channels else all_channels,
-        "date_start":        date_start,
-        "date_end":          date_end,
+        "date_start":        actual_start,
+        "date_end":          actual_end,
         "campaign_types":    campaign_types if campaign_types else all_types,
         "locations":         locations if locations else all_locations,
         "granularity":       granularity,
-        "new_customer_share": new_customer_share,
+        "new_customer_share": float(new_customer_share),
     }
 
     # ── Footer ────────────────────────────────────────────────────────────────
