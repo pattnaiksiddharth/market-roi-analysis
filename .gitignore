@@ -1,14 +1,17 @@
-# Python & Environment
+# Python & Virtual Environments
+.venv/
 __pycache__/
+.env
 *.py[cod]
 *$py.class
 *.so
-.env
-.venv
 env/
 venv/
 ENV/
 *.log
+
+# Testing & Cache
+.pytest_cache/
 
 # Jupyter Notebook Checkpoints
 .ipynb_checkpoints/
@@ -26,8 +29,7 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Large / Regenerable Data Files (See data/README.md for download/reproduction instructions)
+# Large / Regenerable Raw Data Files (See data/README.md for download/reproduction instructions)
 data/raw/raw_dataset.csv
 data/raw/simulated_marketing.csv
 data/processed/clean.csv
-dashboard/data/fact_campaign.csv

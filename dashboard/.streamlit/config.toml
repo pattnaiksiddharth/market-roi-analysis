@@ -1,0 +1,19 @@
+[theme]
+base            = "dark"
+primaryColor    = "#4f6cf7"
+backgroundColor = "#5c61a6"
+secondaryBackgroundColor = "#0c1033"
+textColor       = "#e2e8f0"
+font            = "sans serif"
+
+[browser]
+gatherUsageStats = false
+
+[server]
+# For iframe embedding / Streamlit Community Cloud
+headless         = true
+enableCORS       = false
+enableXsrfProtection = false
+
+[runner]
+fastReruns = true

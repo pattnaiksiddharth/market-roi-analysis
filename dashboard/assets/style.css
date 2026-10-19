@@ -1,0 +1,276 @@
+/* ============================================================
+   Marketing ROI Dashboard – Global Styles
+   Matches the Power BI dark-navy / blue-purple aesthetic
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ── Root tokens ────────────────────────────────────────────── */
+:root {
+    --bg-primary:    #5c61a6;
+    --bg-card:       #0c1033;
+    --bg-card-alt:   #090d2a;
+    --bg-sidebar:    #0a0e2a;
+    --accent-blue:   #4f6cf7;
+    --accent-purple: #8b5cf6;
+    --accent-cyan:   #06b6d4;
+    --positive:      #22c55e;
+    --negative:      #ef4444;
+    --text-primary:  #e2e8f0;
+    --text-secondary:#94a3b8;
+    --border:        rgba(255, 255, 255, 0.25);
+    --radius:        12px;
+}
+
+/* ── Base reset ─────────────────────────────────────────────── */
+html, body, [class*="css"] {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* ── App background (Power BI contrasting canvas) ─────────────── */
+.stApp {
+    background: linear-gradient(135deg, #5c61a6 0%, #4e539b 50%, #6367ab 100%) !important;
+    color: var(--text-primary) !important;
+}
+
+/* ── Sidebar (Dark Navy contrasting with Canvas - starts right at top) ── */
+[data-testid="stSidebar"] {
+    background: #0a0e2a !important;
+    border-right: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    padding-top: 0rem !important;
+    margin-top: 0rem !important;
+}
+[data-testid="stSidebar"] * {
+    color: var(--text-primary);
+}
+[data-testid="stSidebarHeader"],
+[data-testid="stSidebarCollapseButton"] {
+    display: none !important;
+    height: 0px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+section[data-testid="stSidebar"],
+section[data-testid="stSidebar"] > div,
+section[data-testid="stSidebar"] > div:first-child,
+[data-testid="stSidebarUserContent"],
+[data-testid="stSidebarContent"],
+[data-testid="stSidebar"] .block-container {
+    padding-top: 0rem !important;
+    margin-top: 0rem !important;
+    padding-left: 0.85rem !important;
+    padding-right: 0.85rem !important;
+}
+
+/* ── Remove all top spacing and headers ──────────────────────── */
+header[data-testid="stHeader"],
+[data-testid="stHeader"],
+.stHeader,
+header {
+    display: none !important;
+    height: 0px !important;
+    min-height: 0px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+#MainMenu, footer {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+.main, .stMain, .stAppViewContainer {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* ── Main content area starts right at the top ───────────────── */
+.main .block-container,
+[data-testid="stMainBlockContainer"],
+.stMainBlockContainer,
+.block-container {
+    padding-top: 0.15rem !important;
+    margin-top: 0rem !important;
+    padding-bottom: 1.5rem !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    max-width: 100% !important;
+}
+
+/* ── Container Partitions (st.container(border=True)) ────────── */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    background: #0c1033 !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.28) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+    padding: 12px 14px 6px 14px !important;
+    margin-bottom: 6px !important;
+}
+[data-testid="stVerticalBlockBorderWrapper"] > div {
+    gap: 0.4rem !important;
+}
+
+/* ── Visible Section Headers ─────────────────────────────────── */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+    margin-bottom: 8px;
+    padding: 2px 0;
+}
+.section-tag {
+    background: linear-gradient(135deg, #4f6cf7 0%, #8b5cf6 100%);
+    color: #ffffff !important;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 3px 9px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 8px rgba(79, 108, 247, 0.4);
+    display: inline-block;
+}
+.section-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #ffffff !important;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+.section-divider-line {
+    flex-grow: 1;
+    height: 1.5px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.08) 100%);
+    margin-left: 10px;
+}
+
+/* ── Metric widgets (st.metric) ──────────────────────────────── */
+[data-testid="stMetric"] {
+    background: #0c1033 !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.22) !important;
+    border-left: 4px solid var(--accent-blue) !important;
+    border-radius: 10px !important;
+    padding: 12px 16px !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+[data-testid="stMetric"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(79,108,247,0.3) !important;
+}
+[data-testid="stMetricLabel"] { color: var(--text-secondary) !important; font-size: 0.72rem !important; font-weight: 700 !important; text-transform: uppercase !important; }
+[data-testid="stMetricValue"] { color: white !important; font-size: 1.55rem !important; font-weight: 800 !important; }
+[data-testid="stMetricDelta"] { font-size: 0.75rem !important; }
+
+/* ── Streamlit tabs ──────────────────────────────────────────── */
+[data-testid="stTabs"] [role="tablist"] {
+    background: var(--bg-card-alt);
+    border-radius: 8px;
+    padding: 4px;
+    gap: 4px;
+    border: 1px solid var(--border);
+}
+[data-testid="stTabs"] [role="tab"] {
+    color: var(--text-secondary) !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    padding: 6px 14px !important;
+    transition: all 0.2s !important;
+}
+[data-testid="stTabs"] [role="tab"][aria-selected="true"] {
+    background: var(--accent-blue) !important;
+    color: white !important;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+.stButton > button {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 0.82rem !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 10px rgba(79,108,247,0.3) !important;
+}
+.stButton > button:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 20px rgba(79,108,247,0.5) !important;
+}
+
+/* ── Selectbox / multiselect ─────────────────────────────────── */
+.stSelectbox > div > div,
+.stMultiSelect > div > div {
+    background: var(--bg-card) !important;
+    border-color: var(--border) !important;
+    color: var(--text-primary) !important;
+    border-radius: 8px !important;
+}
+
+/* ── Slider ──────────────────────────────────────────────────── */
+.stSlider > div > div > div > div {
+    background: var(--accent-blue) !important;
+}
+
+/* ── Charts container – transparent background ───────────────── */
+[data-testid="stPlotlyChart"] {
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+/* ── Dataframe / AgGrid ──────────────────────────────────────── */
+.stDataFrame, .ag-root-wrapper {
+    background: var(--bg-card) !important;
+    border-radius: var(--radius) !important;
+    border: 1px solid var(--border) !important;
+}
+
+/* ── Info / warning boxes ────────────────────────────────────── */
+[data-testid="stInfo"] {
+    background: var(--bg-card) !important;
+    border-color: var(--accent-blue) !important;
+}
+
+/* ── Number input ────────────────────────────────────────────── */
+.stNumberInput > div > div > input {
+    background: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border) !important;
+    border-radius: 6px !important;
+}
+
+/* ── Spinner ─────────────────────────────────────────────────── */
+[data-testid="stSpinner"] > div {
+    border-top-color: var(--accent-blue) !important;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--accent-blue); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-purple); }
+
+/* ── Section header styling ──────────────────────────────────── */
+h2, h3 {
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+}
+
+/* ── ECharts iframe ──────────────────────────────────────────── */
+.stCustomComponent iframe {
+    border-radius: var(--radius);
+}
+
+/* ── Typography & Header Spacing ────────────────────────────── */
+.main h1 {
+    margin-bottom: 0.25rem !important;
+}
+.main p {
+    margin-bottom: 0.5rem !important;
+}
+[data-testid="stHorizontalBlock"] {
+    align-items: stretch !important;
+    gap: 1rem !important;
+}
